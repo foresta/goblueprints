@@ -24,6 +24,7 @@ func (t *templateHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	r := newRoom()
 	// ルート
 	// http.Handle(string, http.Handler)
 	// http.Hander
@@ -31,6 +32,9 @@ func main() {
 	//      ServeHTTP(ResponseWriter, *Request)
 	// }
 	http.Handle("/", &templateHandler{filename: "chat.html"})
+	http.Handle("/room", r)
+	// チャットルームの開始
+	go r.run()
 
 	// webサーバーを開始する
 	if err := http.ListenAndServe(":8080", nil); err != nil {
