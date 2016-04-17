@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"html/template"
 	"log"
 	"net/http"
@@ -20,10 +21,13 @@ func (t *templateHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	t.once.Do(func() {
 		t.templ = template.Must(template.ParseFiles(filepath.Join("templates", t.filename)))
 	})
-	t.templ.Execute(w, nil) // 本来はt.templ.Executeの戻り値をチェックすべき
+	t.templ.Execute(w, r) // 本来はt.templ.Executeの戻り値をチェックすべき
 }
 
 func main() {
+	var addr = flag.String("addr", ":8080", "アプリケーションのアドレス")
+	flag.Parse() // フラグを解釈します
+
 	r := newRoom()
 	// ルート
 	// http.Handle(string, http.Handler)
@@ -37,7 +41,8 @@ func main() {
 	go r.run()
 
 	// webサーバーを開始する
-	if err := http.ListenAndServe(":8080", nil); err != nil {
+	log.Println("Webサーバーを起動します。ポート: ", *addr)
+	if err := http.ListenAndServe(*addr, nil); err != nil {
 		log.Fatal("ListenAndServe:", err)
 	}
 }
