@@ -6,14 +6,14 @@ import (
 )
 
 func TestNew(t *testing.T) {
-	var buf = bytes.Buffer
+	var buf bytes.Buffer
 	tracer := New(&buf)
 	if tracer == nil {
 		t.Error("Newからの戻り値がnilです")
 	} else {
 		tracer.Trace("こんにちわ、traceパッケージ")
 		if buf.String() != "こんにちわ、traceパッケージ\n" {
-			t.Errorf("'%s'という誤った文字列が出力されました", bnf.String())
+			t.Errorf("'%s'という誤った文字列が出力されました", buf.String())
 		}
 	}
 }
