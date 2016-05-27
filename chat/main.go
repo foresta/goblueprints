@@ -29,12 +29,8 @@ func main() {
 	flag.Parse() // フラグを解釈します
 
 	r := newRoom()
-	// ルート
-	// http.Handle(string, http.Handler)
-	// http.Hander
-	// type Handler interface {
-	//      ServeHTTP(ResponseWriter, *Request)
-	// }
+	//	r.tracer = trace.New(os.Stdout)
+
 	http.Handle("/", &templateHandler{filename: "chat.html"})
 	http.Handle("/room", r)
 	// チャットルームの開始
